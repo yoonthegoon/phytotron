@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "phytotron"
+version = "0.1.0"
+description = ""
+authors = ["Yunis Yilmaz <yunis@Yuniss-MacBook-Pro.local>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+scrapy = "^2.12.0"
+scrapy-playwright = "^0.0.42"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
