@@ -11,9 +11,12 @@ a greenhouse board application submitting bot
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
-  - [settings.py](#settingspy)
-  - [phytotron.toml](#phytotrontoml)
+    - [settings.py](#settingspy)
+    - [phytotron.toml](#phytotrontoml)
 - [Usage](#usage)
+- [Contributing](#contributing)
+    - [Suggest New Form Fields](#suggest-new-form-fields)
+    - [Development](#development)
 
 ## Requirements
 
@@ -37,9 +40,9 @@ The bot will be unable to scrape Google as the default settings by scrapy are:
 ```python
 # phytotron/settings.py
 
-USER_AGENT = "Scrapy/2.12.0 (+https://scrapy.org)"  # L16
-ROBOTSTXT_OBEY = True  # L19
-DEFAULT_REQUEST_HEADERS = {  # L39-L43
+USER_AGENT = "Scrapy/2.12.0 (+https://scrapy.org)"  # L16-L20
+ROBOTSTXT_OBEY = True  # L23
+DEFAULT_REQUEST_HEADERS = {  # L43-47
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "en",
 }
@@ -51,29 +54,7 @@ Google's [robots.txt](https://www.google.com/robots.txt), but it is something th
 ### phytotron.toml
 
 Add a `phytotron.toml` to the project root directory.
-
-```text
-.
-├── LICENSE
-├── README.md
-├── phytotron
-│   ├── __init__.py
-│   ├── __main__.py
-│   ├── items.py
-│   ├── middlewares.py
-│   ├── pipelines.py
-│   ├── settings.py
-│   └── spiders
-│       ├── __init__.py
-│       └── google.py
-├── -> phytotron.toml <-
-├── poetry.lock
-├── pyproject.toml
-├── requirements.txt
-└── scrapy.cfg
-```
-
-Below is an example configuration.
+Below is an example configuration:
 
 ```toml
 # phytotron.toml
@@ -84,7 +65,7 @@ email = "string"
 
 [arguments]
 days = 0  # jobs posted in last <days> days
-keywords = [ "string" ]
+keywords = ["string"]
 
 [phone]
 number = 0  # phone number (no cc)
@@ -130,7 +111,7 @@ contact_sms = false
 govt_work = false
 
 linkedin_profile = "https://linkedin.com/in/<profile>/"
-websites = [ "https://github.com/yoonthegoon" ]
+websites = ["https://github.com/yoonthegoon"]
 
 hear_how = "https://github.com/yoonthegoon/phytotron"
 
@@ -155,3 +136,32 @@ python -m phytotron rerun
 ```
 
 It will go to all the failed application submissions and resubmit them with your new field inputs.
+This will overwrite `items.csv` with the remaining failed submissions.
+From there, you can decide whether or not you'd like to fill those applications out manually.
+
+## Contributing
+
+### Suggest New Form Fields
+
+If there are form fields you're running into frequently, open an issue with the desired field.
+I may update the `phytotron.toml` and add handling the field.
+
+### Development
+
+To open a PR, fork the repository and open a PR with your changes from there.
+
+Poetry 1.8.4 is required for development.
+In the project root directory, run the following:
+
+```shell
+poetry install
+poetry shell
+```
+
+Before opening a PR, please go through this checklist:
+
+- [ ] Update project version in [pyproject.toml](/pyproject.toml#L3)
+  following [Semantic Versioning](https://semver.org/)
+- [ ] Update lock file `poetry update`
+- [ ] Update requirements `poetry export -o requirements.txt`
+- [ ] Format with ruff `ruff format .`

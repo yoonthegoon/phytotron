@@ -1,13 +1,15 @@
 from datetime import date, timedelta
-from typing import Any
+from typing import Any, Iterable
 
 from scrapy.http.response import Response
 from scrapy.spiders import Spider
+from twisted.python.failure import Failure
+
+from phytotron.items import PhytotronItem
 
 
 class GoogleSpider(Spider):
     name = "google"
-    allowed_domains = ["www.google.com", "boards.greenhouse.io"]
 
     def __init__(
         self,
@@ -27,16 +29,31 @@ class GoogleSpider(Spider):
         ]
 
     def parse(self, response: Response, **_: Any) -> Any:
-        urls = response.css("div#main > div > div > div > a::attr(href)").getall()
+        urls = response.css("div#main div div div a::attr(href)").getall()
         for url in urls:
             yield response.follow(url, callback=self.parse_board)
 
-        next_url = response.css(
-            "footer > div:nth-child(1) > div > div > a::attr(href)"
-        ).get()
+        next_url = response.css("footer div:nth-child(1) div div a::attr(href)").get()
         if next_url:
             yield response.follow(next_url, callback=self.parse)
 
-    @staticmethod
-    def parse_board(response: Response):
-        pass  # TODO: POST self.data
+    def parse_board(self, response: Response) -> Iterable[PhytotronItem]:
+        data = self.data
+
+        # TODO: insert input into params from data for each field
+        params = {}
+
+        labels = response.xpath("//label").xpath("string()").getall()
+        for label in labels:
+            label = label.strip()
+            if "*" in label:
+                yield PhytotronItem(
+                    url=response.url,
+                    label=label.strip(),
+                    input="",
+                )
+
+        # response.follow(response.url, method="POST", errback=self.errback_board)
+
+    def errback_board(self, failure: Failure):
+        pass
