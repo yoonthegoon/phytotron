@@ -6,6 +6,15 @@ a greenhouse board application submitting bot
 
 ⚠️ This project is still in development and not yet ready for use. ⚠️
 
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [settings.py](#settingspy)
+  - [phytotron.toml](#phytotrontoml)
+- [Usage](#usage)
+
 ## Requirements
 
 - Python 3.13
@@ -20,6 +29,8 @@ pip install -r requirements.txt
 ```
 
 ## Configuration
+
+### settings.py
 
 The bot will be unable to scrape Google as the default settings by scrapy are:
 
@@ -36,6 +47,8 @@ DEFAULT_REQUEST_HEADERS = {  # L39-L43
 
 I cannot suggest you change those in [settings.py](/phytotron/settings.py) to get around
 Google's [robots.txt](https://www.google.com/robots.txt), but it is something that can be done.
+
+### phytotron.toml
 
 Add a `phytotron.toml` to the project root directory.
 
