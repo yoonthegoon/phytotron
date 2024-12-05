@@ -1,6 +1,10 @@
-# [phytotron](https://en.wikipedia.org/wiki/Phytotron)
+# [phytotron 🪴📋](https://en.wikipedia.org/wiki/Phytotron)
 
 a greenhouse board application submitting bot
+
+## Project Status
+
+⚠️ This project is still in development and not yet ready for use. ⚠️
 
 ## Requirements
 
